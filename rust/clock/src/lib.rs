@@ -14,10 +14,12 @@ pub struct Clock {
 
 impl Clock {
     pub fn new(hours: i32, minutes: i32) -> Self {
-        let add_hours = minutes / 60;
-        let new_minutes = minutes % 60;
+        let total_min = minutes + (hours * 60);
+        let new_minutes = total_min.rem_euclid(60);
+        let new_hours = (total_min - new_minutes) / 60;
+
         Clock {
-            hours: (hours + add_hours) % 24,
+            hours: new_hours.rem_euclid(24),
             minutes: new_minutes,
         }
     }
