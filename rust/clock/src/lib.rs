@@ -14,35 +14,19 @@ pub struct Clock {
 
 impl Clock {
     pub fn new(hours: i32, minutes: i32) -> Self {
+        let add_hours = minutes / 60;
+        let new_minutes = minutes % 60;
         Clock {
-            hours: hours,
-            minutes: minutes,
-        }
-    }
-
-    pub fn add_minutes(&self, minutes: i32) -> Self {
-        let mut hrs = 0;
-        if minutes / 60 >= 1 {
-            hrs = minutes / 60;
-            self.add_hours(hrs);
-        };
-
-        let mut new_minutes = self.minutes + minutes;
-
-        if new_minutes > 60 {
-            new_minutes = 60;
-        }
-
-        Clock {
-            hours: self.hours,
+            hours: (hours + add_hours) % 24,
             minutes: new_minutes,
         }
     }
 
+    pub fn add_minutes(&self, minutes: i32) -> Self {
+        Clock::new(self.hours, self.minutes + minutes)
+    }
+
     pub fn add_hours(&self, hours: i32) -> Self {
-        Clock {
-            hours: self.hours + hours,
-            minutes: self.minutes,
-        }
+        Clock::new(self.hours + hours, self.minutes)
     }
 }
